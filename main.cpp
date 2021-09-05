@@ -87,10 +87,10 @@ int main() {
     }
     a.close();
 
-    string code = "600001";
+    string code = "600000";
     Snapshot *index = stocks.query(code);
     if (index == NULL) {
-        cout << "查询不到对应股票" << endl;
+        cout << "查询不到对应股票:" << code << endl;
     } else {
         Snapshot sp = *index;
         cout << code << "的五档结构" << endl;
