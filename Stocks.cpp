@@ -138,11 +138,12 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
  * @param symbol
  * @return
  */
-Snapshot Stocks::query(std::string symbol) {
+Snapshot* Stocks::query(std::string symbol) {
     const std::map<std::string, Snapshot>::iterator &iterator = snapshotMap.find(
             symbol);
     if (iterator != snapshotMap.end()) {
-        return iterator->second;
+        return &iterator->second;
     }
+    return NULL;
 }
 

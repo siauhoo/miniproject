@@ -45,7 +45,7 @@ public:
      */
     void deserialize(std::unique_ptr<char[]> &arg, std::streamsize size);
 
-    Snapshot query(std::string symbol);
+    Snapshot *query(std::string symbol);
 
     ~Stocks() {
         snapshotMap.clear();

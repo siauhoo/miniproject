@@ -4,8 +4,6 @@
 #include <array>
 #include <memory>
 #include <type_traits>
-#include <iostream>
-#include <iomanip>
 #include <fstream>
 
 #include "Stocks.h"
@@ -81,7 +79,7 @@ int main() {
         std::streamsize size = 0;
         unique_ptr<char[]> buf = a.read(offset, &size);
         if (size == 0) {
-            cout << "[WARN]文件读取内容为空" << endl;
+            cout << "[WARN]文件读取内容为空或者已经到末尾" << endl;
             break;
         }
         stocks.deserialize(buf, size);
@@ -89,21 +87,26 @@ int main() {
     }
     a.close();
 
-    string code = "600000";
-    Snapshot sp = stocks.query(code);
-    cout << code << "的五档结构" << endl;
-    cout << "卖盘:" << endl;
-    cout << "卖五： " << sp.askSize[4] << "\t" << sp.askPrice[4] << endl;
-    cout << "卖四： " << sp.askSize[3] << "\t" << sp.askPrice[3] << endl;
-    cout << "卖三： " << sp.askSize[2] << "\t" << sp.askPrice[2] << endl;
-    cout << "卖二： " << sp.askSize[1] << "\t" << sp.askPrice[1] << endl;
-    cout << "卖一： " << sp.askSize[0] << "\t" << sp.askPrice[0] << endl;
-    cout << "*******************************" << endl;
-    cout << "买一： " << sp.bidSize[0] << "\t" << sp.bidPrice[0] << endl;
-    cout << "买二： " << sp.bidSize[1] << "\t" << sp.bidPrice[1] << endl;
-    cout << "买三： " << sp.bidSize[2] << "\t" << sp.bidPrice[2] << endl;
-    cout << "买四： " << sp.bidSize[3] << "\t" << sp.bidPrice[3] << endl;
-    cout << "买五： " << sp.bidSize[4] << "\t" << sp.bidPrice[4] << endl;
+    string code = "600001";
+    Snapshot *index = stocks.query(code);
+    if (index == NULL) {
+        cout << "查询不到对应股票" << endl;
+    } else {
+        Snapshot sp = *index;
+        cout << code << "的五档结构" << endl;
+        cout << "卖盘:" << endl;
+        cout << "卖五： " << sp.askSize[4] << "\t" << sp.askPrice[4] << endl;
+        cout << "卖四： " << sp.askSize[3] << "\t" << sp.askPrice[3] << endl;
+        cout << "卖三： " << sp.askSize[2] << "\t" << sp.askPrice[2] << endl;
+        cout << "卖二： " << sp.askSize[1] << "\t" << sp.askPrice[1] << endl;
+        cout << "卖一： " << sp.askSize[0] << "\t" << sp.askPrice[0] << endl;
+        cout << "*******************************" << endl;
+        cout << "买一： " << sp.bidSize[0] << "\t" << sp.bidPrice[0] << endl;
+        cout << "买二： " << sp.bidSize[1] << "\t" << sp.bidPrice[1] << endl;
+        cout << "买三： " << sp.bidSize[2] << "\t" << sp.bidPrice[2] << endl;
+        cout << "买四： " << sp.bidSize[3] << "\t" << sp.bidPrice[3] << endl;
+        cout << "买五： " << sp.bidSize[4] << "\t" << sp.bidPrice[4] << endl;
+    }
 }
 
 
