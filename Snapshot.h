@@ -20,6 +20,7 @@ public:
     uint32_t bidSize[5]; // 买数量
     double askPrice[5]; // 卖价
     uint32_t askSize[5]; // 卖数量
+    void show();
 };
 
 #pragma pack(pop)
