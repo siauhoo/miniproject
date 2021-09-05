@@ -5,6 +5,10 @@
 #include "File.h"
 
 
+static const size_t UPDATE_LEVEL_SIZE = sizeof(UpdateLevel);
+static const size_t DELETE_LEVEL_SIZE = sizeof(DeleteLevel);
+static const size_t SNAPSHOT_SIZE = sizeof(Snapshot);
+
 /**
 * 检查文件是否存在
 */
@@ -52,12 +56,23 @@ void File::close() {
 * offset参数表示开始读取的偏移
 * 读取位置置于本次最后读取的内容的结尾
 */
-std::unique_ptr<char[]> File::read(std::size_t maxSize, std::size_t offset, std::streamsize *size) {
+std::unique_ptr<char[]> File::read(std::size_t offset, std::streamsize *size) {
     if (!fileStream.is_open()) {
         throw ("文件读取错误");
     }
     if (offset > 0) {
         seekInputPosition(offset);
+    }
+    uint8_t head = ReadUInt8(fileStream.peek());
+    size_t maxSize = 0;
+    if (head == 1) {
+        maxSize = SNAPSHOT_SIZE;
+    } else if (head == 2) {
+        maxSize = UPDATE_LEVEL_SIZE;
+    } else if (head == 3) {
+        maxSize = DELETE_LEVEL_SIZE;
+    } else {
+        throw "坏的文件格式";
     }
     std::unique_ptr<char[]> buffer(new(std::nothrow) char[maxSize]);
     fileStream.read(buffer.get(), maxSize);

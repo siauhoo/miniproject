@@ -5,6 +5,7 @@
 #ifndef MINIPROJECT_FILE_H
 #define MINIPROJECT_FILE_H
 
+
 #include <fstream>
 #include <string>
 #include <stdexcept>
@@ -13,6 +14,9 @@
 #include <unistd.h>
 
 #include<sys/stat.h>
+#include "Snapshot.h"
+#include "UpdateLevel.h"
+#include "DeleteLevel.h"
 
 class File {
 
@@ -52,7 +56,7 @@ public:
     * offset参数表示开始读取的偏移
     * 读取位置置于本次最后读取的内容的结尾
     */
-    std::unique_ptr<char[]> read(std::size_t maxSize, std::size_t offset = 0, std::streamsize *size = 0);
+    std::unique_ptr<char[]> read(std::size_t offset = 0, std::streamsize *size = 0);
 
 
     explicit File(const std::string &fileName);

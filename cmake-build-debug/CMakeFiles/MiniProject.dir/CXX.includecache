@@ -10,6 +10,10 @@
 sysinfo.h
 /Users/charles.cxh/CLionProjects/MiniProject/sysinfo.h
 
+/Users/charles.cxh/CLionProjects/MiniProject/File.cpp
+File.h
+/Users/charles.cxh/CLionProjects/MiniProject/File.h
+
 /Users/charles.cxh/CLionProjects/MiniProject/File.h
 fstream
 -
@@ -25,6 +29,12 @@ unistd.h
 -
 sys/stat.h
 -
+Snapshot.h
+/Users/charles.cxh/CLionProjects/MiniProject/Snapshot.h
+UpdateLevel.h
+/Users/charles.cxh/CLionProjects/MiniProject/UpdateLevel.h
+DeleteLevel.h
+/Users/charles.cxh/CLionProjects/MiniProject/DeleteLevel.h
 
 /Users/charles.cxh/CLionProjects/MiniProject/Snapshot.h
 sysinfo.h

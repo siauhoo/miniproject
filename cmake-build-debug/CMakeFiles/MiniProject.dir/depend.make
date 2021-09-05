@@ -6,8 +6,12 @@ CMakeFiles/MiniProject.dir/DeleteLevel.cpp.o: \
  ../DeleteLevel.h \
  ../sysinfo.h
 CMakeFiles/MiniProject.dir/File.cpp.o: \
+ ../DeleteLevel.h \
  ../File.cpp \
- ../File.h
+ ../File.h \
+ ../Snapshot.h \
+ ../UpdateLevel.h \
+ ../sysinfo.h
 CMakeFiles/MiniProject.dir/Snapshot.cpp.o: \
  ../Snapshot.cpp \
  ../Snapshot.h \

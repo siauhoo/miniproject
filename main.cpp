@@ -14,9 +14,6 @@
 
 using namespace std;
 
-//chunkSize代表文件读取buffer的大小，取倍数方便跨区处理
-static size_t chunkSize = sizeof(Snapshot) * sizeof(UpdateLevel) * sizeof(DeleteLevel);
-
 /**
  * 测试准备文件
  */
@@ -80,13 +77,13 @@ int main() {
     while (!a.endOfFile()) {
         size_t offset = 0;
         std::streamsize size = 0;
-        unique_ptr<char[]> buf = a.read(chunkSize, offset, &size);
+        unique_ptr<char[]> buf = a.read(offset, &size);
         if (size == 0) {
             cout << "[WARN]文件读取内容为空" << endl;
             break;
         }
         stocks.deserialize(buf, size);
-        offset += chunkSize;
+        offset += size;
 
     }
     a.close();
