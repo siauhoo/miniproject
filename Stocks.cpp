@@ -79,7 +79,7 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
                          sideOffset + levelOffset]);
             updateLevel.size = sysinfo::ReadUInt32(
                     &arg[offset + msgTypeOffset + symbolOffset +
-                         sideOffset + priceOffset]);
+                         sideOffset + levelOffset + priceOffset]);
 
             char *str = new char[symbolOffset + 1];
             memcpy(str, updateLevel.symbol, symbolOffset);
@@ -97,7 +97,7 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
                 }
             }
             offset += sizeof(UpdateLevel);
-            delete str;
+            delete [] str;
 
         } else if (type == DELETE_TYPE) {
             DeleteLevel deleteLevel;
@@ -105,6 +105,11 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
 
             deleteLevel.msgType = sysinfo::ReadUInt8(arg[offset]);
             memcpy(&deleteLevel.symbol, &arg[offset + sizeof(deleteLevel.msgType)], symbolOffset);
+            deleteLevel.side = sysinfo::ReadUInt8(
+                    arg[offset + msgTypeOffset + symbolOffset]);
+            deleteLevel.level = sysinfo::ReadUInt8(
+                    arg[offset + msgTypeOffset + symbolOffset +
+                        sideOffset]);
 
             char *str = new char[symbolOffset + 1];
             memcpy(str, deleteLevel.symbol, symbolOffset);
@@ -122,7 +127,7 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
                 }
             }
             offset += sizeof(DeleteLevel);
-            delete str;
+            delete [] str;
         }
     }
 

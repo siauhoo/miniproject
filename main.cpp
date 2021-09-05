@@ -41,7 +41,7 @@ static void prepare() {
 
     //deleteLevel对象
     DeleteLevel deleteLevel;
-    deleteLevel.msgType = 2;
+    deleteLevel.msgType = 3;
     memcpy(deleteLevel.symbol, "600000", 6 * sizeof(char));
     deleteLevel.side = 2;
     deleteLevel.level = 4;
@@ -73,9 +73,11 @@ int main() {
     }
 
     a.open(std::ifstream::binary | std::ifstream::in | std::ifstream::out);
+    size_t offset = 0;
+
+
     Stocks stocks;
     while (!a.endOfFile()) {
-        size_t offset = 0;
         std::streamsize size = 0;
         unique_ptr<char[]> buf = a.read(offset, &size);
         if (size == 0) {
@@ -84,7 +86,6 @@ int main() {
         }
         stocks.deserialize(buf, size);
         offset += size;
-
     }
     a.close();
 

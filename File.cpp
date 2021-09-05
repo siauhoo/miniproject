@@ -2,6 +2,7 @@
 // Created by charles.cxh on 2021/9/4.
 //
 
+#include <iostream>
 #include "File.h"
 
 
@@ -63,6 +64,7 @@ std::unique_ptr<char[]> File::read(std::size_t offset, std::streamsize *size) {
     if (offset > 0) {
         seekInputPosition(offset);
     }
+
     uint8_t head = ReadUInt8(fileStream.peek());
     size_t maxSize = 0;
     if (head == 1) {
@@ -72,7 +74,8 @@ std::unique_ptr<char[]> File::read(std::size_t offset, std::streamsize *size) {
     } else if (head == 3) {
         maxSize = DELETE_LEVEL_SIZE;
     } else {
-        throw "坏的文件格式";
+        return nullptr;
+        *size = 0;
     }
     std::unique_ptr<char[]> buffer(new(std::nothrow) char[maxSize]);
     fileStream.read(buffer.get(), maxSize);

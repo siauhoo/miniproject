@@ -10,35 +10,25 @@
 sysinfo.h
 /Users/charles.cxh/CLionProjects/MiniProject/sysinfo.h
 
-/Users/charles.cxh/CLionProjects/MiniProject/File.cpp
-File.h
-/Users/charles.cxh/CLionProjects/MiniProject/File.h
+/Users/charles.cxh/CLionProjects/MiniProject/Snapshot.h
+sysinfo.h
+/Users/charles.cxh/CLionProjects/MiniProject/sysinfo.h
 
-/Users/charles.cxh/CLionProjects/MiniProject/File.h
-fstream
+/Users/charles.cxh/CLionProjects/MiniProject/Stocks.cpp
+Stocks.h
+/Users/charles.cxh/CLionProjects/MiniProject/Stocks.h
+map
 -
-string
+iostream
 -
-stdexcept
--
-memory
--
-sstream
--
-unistd.h
--
-sys/stat.h
--
+sysinfo.h
+/Users/charles.cxh/CLionProjects/MiniProject/sysinfo.h
 Snapshot.h
 /Users/charles.cxh/CLionProjects/MiniProject/Snapshot.h
 UpdateLevel.h
 /Users/charles.cxh/CLionProjects/MiniProject/UpdateLevel.h
 DeleteLevel.h
 /Users/charles.cxh/CLionProjects/MiniProject/DeleteLevel.h
-
-/Users/charles.cxh/CLionProjects/MiniProject/Snapshot.h
-sysinfo.h
-/Users/charles.cxh/CLionProjects/MiniProject/sysinfo.h
 
 /Users/charles.cxh/CLionProjects/MiniProject/Stocks.h
 fstream
@@ -67,26 +57,6 @@ DeleteLevel.h
 /Users/charles.cxh/CLionProjects/MiniProject/UpdateLevel.h
 sysinfo.h
 /Users/charles.cxh/CLionProjects/MiniProject/sysinfo.h
-
-/Users/charles.cxh/CLionProjects/MiniProject/main.cpp
-iostream
--
-array
--
-memory
--
-type_traits
--
-iostream
--
-iomanip
--
-fstream
--
-Stocks.h
-/Users/charles.cxh/CLionProjects/MiniProject/Stocks.h
-File.h
-/Users/charles.cxh/CLionProjects/MiniProject/File.h
 
 /Users/charles.cxh/CLionProjects/MiniProject/sysinfo.h
 
