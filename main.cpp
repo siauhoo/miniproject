@@ -60,13 +60,13 @@ int main() {
     assert(sysinfo::IsLittleEndian());
 
     //初始化文件对象
-    prepare();
+   // prepare();
 
     //文件读取到缓冲区
 
-    File a = File("test.bin");
+    File a = File("test1.bin");
 
-    if (!a.exists("test.bin")) {
+    if (!a.exists("test1.bin")) {
         throw "文件不存在";
     }
 

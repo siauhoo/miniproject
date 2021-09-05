@@ -11,6 +11,7 @@
 #include "DeleteLevel.h"
 
 using namespace sysinfo;
+using namespace std;
 
 enum msgType {
     SNAPSHOT_TYPE = (uint8_t) 1,//存在
@@ -61,8 +62,22 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
             memcpy(str, snapshot.symbol, symbolOffset);
             str[symbolOffset] = '\0';
             snapshotMap.insert(std::map<std::string, Snapshot>::value_type(std::string(str), snapshot));
-            delete str;
+            //delete str;
 
+            Snapshot sp = snapshot;
+            cout << "SNAPSHOT_TYPE" << str << "的五档结构" << endl;
+            cout << "卖盘:" << endl;
+            cout << "卖五： " << sp.askSize[4] << "\t" << sp.askPrice[4] << endl;
+            cout << "卖四： " << sp.askSize[3] << "\t" << sp.askPrice[3] << endl;
+            cout << "卖三： " << sp.askSize[2] << "\t" << sp.askPrice[2] << endl;
+            cout << "卖二： " << sp.askSize[1] << "\t" << sp.askPrice[1] << endl;
+            cout << "卖一： " << sp.askSize[0] << "\t" << sp.askPrice[0] << endl;
+            cout << "*******************************" << endl;
+            cout << "买一： " << sp.bidSize[0] << "\t" << sp.bidPrice[0] << endl;
+            cout << "买二： " << sp.bidSize[1] << "\t" << sp.bidPrice[1] << endl;
+            cout << "买三： " << sp.bidSize[2] << "\t" << sp.bidPrice[2] << endl;
+            cout << "买四： " << sp.bidSize[3] << "\t" << sp.bidPrice[3] << endl;
+            cout << "买五： " << sp.bidSize[4] << "\t" << sp.bidPrice[4] << endl;
         } else if (type == UPDATE_TYPE) {
             UpdateLevel updateLevel;
             memset(&updateLevel, 0, sizeof(struct UpdateLevel));
@@ -89,16 +104,67 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
                     str);
             if (iterator != snapshotMap.end()) {
                 if (updateLevel.side == 1) {
-                    iterator->second.bidPrice[updateLevel.level] = updateLevel.price;
-                    iterator->second.bidSize[updateLevel.level] = updateLevel.size;
+                    iterator->second.bidPrice[updateLevel.level - 1] = updateLevel.price;
+                    iterator->second.bidSize[updateLevel.level - 1] = updateLevel.size;
+                    for (int i = 0; i < 4; i++) {
+                        if (iterator->second.bidSize[i] == 0) {
+                            int j = i;
+                            while (iterator->second.bidSize[j] == 0)
+                                j++;
+                            if (iterator->second.bidSize[j] != 0) {
+                                uint32_t tmp_size = iterator->second.bidSize[j];
+                                iterator->second.bidSize[j] = iterator->second.bidSize[i];
+                                iterator->second.bidSize[i] = tmp_size;
+
+                                double tmp_price = iterator->second.bidPrice[j];
+                                iterator->second.bidPrice[j] = iterator->second.bidPrice[i];
+                                iterator->second.bidPrice[i] = tmp_price;
+                                i = j;
+                            }
+                        }
+                    }
                 } else if (updateLevel.side == 2) {
-                    iterator->second.askPrice[updateLevel.level] = updateLevel.price;
-                    iterator->second.askSize[updateLevel.level] = updateLevel.size;
+                    iterator->second.askPrice[updateLevel.level - 1] = updateLevel.price;
+                    iterator->second.askSize[updateLevel.level - 1] = updateLevel.size;
+                    for (int i = 0; i < 4; i++) {
+                        if (iterator->second.askSize[i] == 0) {
+                            int j = i;
+                            while (iterator->second.askSize[j] == 0)
+                                j++;
+                            if (iterator->second.askSize[j] != 0) {
+                                uint32_t tmp_size = iterator->second.askSize[j];
+                                iterator->second.askSize[j] = iterator->second.askSize[i];
+                                iterator->second.askSize[i] = tmp_size;
+
+                                double tmp_price = iterator->second.askPrice[j];
+                                iterator->second.askPrice[j] = iterator->second.askPrice[i];
+                                iterator->second.askPrice[i] = tmp_price;
+                                i = j;
+                            }
+                        }
+                    }
                 }
             }
             offset += sizeof(UpdateLevel);
-            delete [] str;
-
+            //delete[] str;
+            Snapshot sp = iterator->second;
+            cout << "UPDATE_TYPE" << str << (int)
+                    updateLevel.side << "level:" << (int) updateLevel.level
+                 << "price:" << updateLevel.price
+                 << "size:" << updateLevel.size << "的五档结构"
+                 << endl;
+            cout << "卖盘:" << endl;
+            cout << "卖五： " << sp.askSize[4] << "\t" << sp.askPrice[4] << endl;
+            cout << "卖四： " << sp.askSize[3] << "\t" << sp.askPrice[3] << endl;
+            cout << "卖三： " << sp.askSize[2] << "\t" << sp.askPrice[2] << endl;
+            cout << "卖二： " << sp.askSize[1] << "\t" << sp.askPrice[1] << endl;
+            cout << "卖一： " << sp.askSize[0] << "\t" << sp.askPrice[0] << endl;
+            cout << "*******************************" << endl;
+            cout << "买一： " << sp.bidSize[0] << "\t" << sp.bidPrice[0] << endl;
+            cout << "买二： " << sp.bidSize[1] << "\t" << sp.bidPrice[1] << endl;
+            cout << "买三： " << sp.bidSize[2] << "\t" << sp.bidPrice[2] << endl;
+            cout << "买四： " << sp.bidSize[3] << "\t" << sp.bidPrice[3] << endl;
+            cout << "买五： " << sp.bidSize[4] << "\t" << sp.bidPrice[4] << endl;
         } else if (type == DELETE_TYPE) {
             DeleteLevel deleteLevel;
             memset(&deleteLevel, 0, sizeof(struct DeleteLevel));
@@ -119,15 +185,50 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
                     str);
             if (iterator != snapshotMap.end()) {
                 if (deleteLevel.side == 1) {
-                    iterator->second.bidPrice[deleteLevel.level] = 0;
-                    iterator->second.bidSize[deleteLevel.level] = 0;
+                    if (deleteLevel.level == 5) {
+                        iterator->second.bidPrice[4] = 0;
+                        iterator->second.bidSize[4] = 0;
+                    } else {
+                        for (int i = deleteLevel.level; i < 5; ++i) {
+                            iterator->second.bidPrice[i - 1] = iterator->second.bidPrice[i];
+                            iterator->second.bidSize[i - 1] = iterator->second.bidSize[i];
+                        }
+                        iterator->second.bidPrice[4] = 0;
+                        iterator->second.bidSize[4] = 0;
+                    }
                 } else if (deleteLevel.side == 2) {
-                    iterator->second.askPrice[deleteLevel.level] = 0;
-                    iterator->second.askSize[deleteLevel.level] = 0;
+                    if (deleteLevel.level == 5) {
+                        iterator->second.askPrice[4] = 0;
+                        iterator->second.bidSize[4] = 0;
+                    } else {
+                        for (int i = deleteLevel.level; i < 5; ++i) {
+                            iterator->second.askPrice[i - 1] = iterator->second.askPrice[i];
+                            iterator->second.askSize[i - 1] = iterator->second.askSize[i];
+                        }
+                        iterator->second.askPrice[4] = 0;
+                        iterator->second.askSize[4] = 0;
+                    }
                 }
             }
             offset += sizeof(DeleteLevel);
-            delete [] str;
+            //delete[] str;
+
+            Snapshot sp = iterator->second;
+            cout << "DELETE_TYPE" << str << "side: " << (int) deleteLevel.side << "level:" << (int) deleteLevel.level
+                 << "的五档结构" << endl;
+            cout << "卖盘:" << endl;
+            cout << "卖五： " << sp.askSize[4] << "\t" << sp.askPrice[4] << endl;
+            cout << "卖四： " << sp.askSize[3] << "\t" << sp.askPrice[3] << endl;
+            cout << "卖三： " << sp.askSize[2] << "\t" << sp.askPrice[2] << endl;
+            cout << "卖二： " << sp.askSize[1] << "\t" << sp.askPrice[1] << endl;
+            cout << "卖一： " << sp.askSize[0] << "\t" << sp.askPrice[0] << endl;
+            cout << "*******************************" << endl;
+            cout << "买一： " << sp.bidSize[0] << "\t" << sp.bidPrice[0] << endl;
+            cout << "买二： " << sp.bidSize[1] << "\t" << sp.bidPrice[1] << endl;
+            cout << "买三： " << sp.bidSize[2] << "\t" << sp.bidPrice[2] << endl;
+            cout << "买四： " << sp.bidSize[3] << "\t" << sp.bidPrice[3] << endl;
+            cout << "买五： " << sp.bidSize[4] << "\t" << sp.bidPrice[4] << endl;
+
         }
     }
 
@@ -138,7 +239,7 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
  * @param symbol
  * @return
  */
-Snapshot* Stocks::query(std::string symbol) {
+Snapshot *Stocks::query(std::string symbol) {
     const std::map<std::string, Snapshot>::iterator &iterator = snapshotMap.find(
             symbol);
     if (iterator != snapshotMap.end()) {
