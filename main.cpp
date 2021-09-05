@@ -87,7 +87,7 @@ int main() {
     }
     a.close();
 
-    string code = "600000";
+    string code = "600020";
     Snapshot *index = stocks.query(code);
     if (index == NULL) {
         cout << "查询不到对应股票:" << code << endl;

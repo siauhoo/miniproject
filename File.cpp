@@ -74,8 +74,8 @@ std::unique_ptr<char[]> File::read(std::size_t offset, std::streamsize *size) {
     } else if (head == 3) {
         maxSize = DELETE_LEVEL_SIZE;
     } else {
-        return nullptr;
         *size = 0;
+        return nullptr;
     }
     std::unique_ptr<char[]> buffer(new(std::nothrow) char[maxSize]);
     fileStream.read(buffer.get(), maxSize);
