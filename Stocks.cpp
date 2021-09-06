@@ -146,7 +146,7 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
                 } else if (deleteLevel.side == 2) {
                     if (deleteLevel.level == 5) {
                         iterator->second.askPrice[4] = 0;
-                        iterator->second.bidSize[4] = 0;
+                        iterator->second.askSize[4] = 0;
                     } else {
                         for (int i = deleteLevel.level; i < 5; ++i) {
                             iterator->second.askPrice[i - 1] = iterator->second.askPrice[i];
