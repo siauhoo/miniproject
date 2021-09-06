@@ -87,52 +87,17 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
             const std::map<std::string, Snapshot>::iterator &iterator = snapshotMap.find(
                     str);
             if (iterator != snapshotMap.end()) {
-                cout << "更新" << str << (int) updateLevel.side << "(1-Bid 2-Ask)" << (int) updateLevel.level
-                     << updateLevel.size << " " << updateLevel.price << endl;
+                cout << "更新" << str << (int) updateLevel.side << "(1-Bid 2-Ask) " << (int) updateLevel.level
+                     << "档 数量："<< updateLevel.size << "价格：" << updateLevel.price << endl;
 
                 cout << "修改前" << endl;
                 iterator->second.show();
-
                 if (updateLevel.side == 1) {
                     iterator->second.bidPrice[updateLevel.level - 1] = updateLevel.price;
                     iterator->second.bidSize[updateLevel.level - 1] = updateLevel.size;
-                    for (int i = 0; i < 4; i++) {
-                        if (iterator->second.bidSize[i] == 0) {
-                            int j = i;
-                            while (iterator->second.bidSize[j] == 0)
-                                j++;
-                            if (iterator->second.bidSize[j] != 0) {
-                                uint32_t tmp_size = iterator->second.bidSize[j];
-                                iterator->second.bidSize[j] = iterator->second.bidSize[i];
-                                iterator->second.bidSize[i] = tmp_size;
-
-                                double tmp_price = iterator->second.bidPrice[j];
-                                iterator->second.bidPrice[j] = iterator->second.bidPrice[i];
-                                iterator->second.bidPrice[i] = tmp_price;
-                                i = j;
-                            }
-                        }
-                    }
                 } else if (updateLevel.side == 2) {
                     iterator->second.askPrice[updateLevel.level - 1] = updateLevel.price;
                     iterator->second.askSize[updateLevel.level - 1] = updateLevel.size;
-                    for (int i = 0; i < 4; i++) {
-                        if (iterator->second.askSize[i] == 0) {
-                            int j = i;
-                            while (iterator->second.askSize[j] == 0)
-                                j++;
-                            if (iterator->second.askSize[j] != 0) {
-                                uint32_t tmp_size = iterator->second.askSize[j];
-                                iterator->second.askSize[j] = iterator->second.askSize[i];
-                                iterator->second.askSize[i] = tmp_size;
-
-                                double tmp_price = iterator->second.askPrice[j];
-                                iterator->second.askPrice[j] = iterator->second.askPrice[i];
-                                iterator->second.askPrice[i] = tmp_price;
-                                i = j;
-                            }
-                        }
-                    }
                 }
 
                 cout << "修改后" << endl;
@@ -161,8 +126,8 @@ void Stocks::deserialize(std::unique_ptr<char[]> &arg, std::streamsize size) {
                     str);
             if (iterator != snapshotMap.end()) {
 
-                cout << "删除" << str << (int) deleteLevel.side << "(1-Bid 2-Ask)" << (int) deleteLevel.level
-                     << endl;
+                cout << "删除" << str <<"(" <<(int) deleteLevel.side << ":1-Bid 2-Ask) " << (int) deleteLevel.level
+                     <<"档" << endl;
                 cout << "删除前" << endl;
                 iterator->second.show();
 

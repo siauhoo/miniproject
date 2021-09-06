@@ -8,10 +8,10 @@
 using namespace std;
 
 void Snapshot::show() {
-    char *str = new char[6];
-    memcpy(str, symbol, 5);
-    str[5] = '\0';
-    cout << "SNAPSHOT_TYPE" << str << "的五档结构" << endl;
+    char *str = new char[7];
+    memcpy(str, symbol, 6);
+    str[6] = '\0';
+    cout << str << "的五档结构" << endl;
     cout << "卖盘:" << endl;
     cout << "卖五： " << askSize[4] << "\t" << askPrice[4] << endl;
     cout << "卖四： " << askSize[3] << "\t" << askPrice[3] << endl;
@@ -24,4 +24,5 @@ void Snapshot::show() {
     cout << "买三： " << bidSize[2] << "\t" << bidPrice[2] << endl;
     cout << "买四： " << bidSize[3] << "\t" << bidPrice[3] << endl;
     cout << "买五： " << bidSize[4] << "\t" << bidPrice[4] << endl;
+    delete [] str;
 }
